@@ -1,8 +1,13 @@
 <?php
 @include("../config.php");
+/**
+ * Class Main
+ */
 class Main
 {
-    /* BEGIN __CONSTRUNCT FUNCITON FOR THE MAIN CLASS */
+    /**
+     * Main constructor.
+     */
     public function __construct()
     {
         /*BEGIN SETTING PAGE PER RECORD */
@@ -16,14 +21,16 @@ class Main
         define("SITE_TITLE", stripslashes($this->sitedata['site_title']));
         define("SITE_EMAIL", stripslashes($this->sitedata['site_email']));
     }
-    /* END __CONSTRUNCT FUNCITON FOR THE MAIN CLASS */
-    /*BEGIN DATABASE CONNECTION FUNCTION WITH MYSQLI*/
+    /**
+     *
+     */
     public function AddLink()
     {
         echo $this->pagefilename . '?action=add';
     }
-    /*BEGIN DATABASE CONNECTION FUNCTION WITH MYSQLI*/
-    /*BEGIN PAGE REDIRECTION FUNCTION */
+    /**
+     * @return mysqli
+     */
     private function DBConnection()
     {
         @include("../config.php");
@@ -35,8 +42,12 @@ class Main
             return $con;
         }
     }
-    /*END PAGE REDIRECTION FUNCTION : RedirectPage()*/
-    /*BEGIN VIEW LINK CREATION FUNCTION */
+    /**
+     * @param string $date1
+     * @param string $date2
+     *
+     * @return array
+     */
     public function DateDifference($date1, $date2)
     {
         $difference = abs(strtotime($date1) - strtotime($date2));
@@ -45,22 +56,29 @@ class Main
         $difference_array['extra_hours'] = abs($difference_array['hours'] % 24);
         return $difference_array;
     }
-    /*END EDIT LINK CREATION FUNCTION */
-    /*BEGIN VIEW LINK CREATION FUNCTION */
+    /**
+     * @param array $array
+     */
     public function DeleteFile(array $array)
     {
         foreach ($array['files'] as $key => $value) {
             @unlink($array['uploadpath'] . $value);
         }
     }
-    /*END EDIT LINK CREATION FUNCTION */
-    /*BEGIN EDIT LINK CREATION FUNCTION */
+    /**
+     * @param string $id
+     */
     public function DeleteLink($id)
     {
         echo $this->pagefilename . '?action=delete&id=' . $id;
     }
-    /*END EDIT LINK CREATION FUNCTION */
-    /*BEGIN STATUS CHANGE LINK CREATION FUNCTION */
+    /**
+     * @param string $tablename
+     * @param string $where
+     * @param int    $limit
+     *
+     * @return int
+     */
     public function DeleteRecord($tablename, $where, $limit = 0)
     {
         /*
@@ -88,12 +106,18 @@ class Main
         mysqli_close($con);
         return $totaldeleted;
     }
+    /**
+     * @param string $id
+     */
     public function EditLink($id)
     {
         echo $this->pagefilename . '?action=edit&id=' . $id;
     }
-    /*END STATUS CHANGE LINK CREATION FUNCTION */
-    /*BEGIN DELETE LINK CREATION FUNCTION */
+    /**
+     * @param string $query_string
+     *
+     * @return array
+     */
     public function GetCustom($query_string)
     {
         /*
@@ -111,8 +135,11 @@ class Main
         mysqli_close($con);
         return $record_array;
     }
-    /*END DELETE LINK CREATION FUNCTION */
-    /*BEGIN VALIDATE FUNCTION */
+    /**
+     * @param string $string
+     *
+     * @return string
+     */
     protected function GetPassword($string)
     {
         if (!empty($string)) {
@@ -123,9 +150,14 @@ class Main
             //return hash("sha256", $string);
             //return hash("sha512", $string);
         }
+        return $string;
     }
-    /*END VALIDATE FUNCTION */
-    /*BEGIN SEND MAIL FUNCTION */
+    /**
+     * @param int $length
+     * @param int $type
+     *
+     * @return string
+     */
     public function GetRandomString($length, $type = 0)
     {
         $key = '';
@@ -133,7 +165,7 @@ class Main
         {
             $keys = range(0, 9);
         } else {
-            if ($type == 2)    //APHA ONLY
+            if ($type == 2)    //ALPHA ONLY
             {
                 $keys = range('a', 'z');
             } else {
@@ -145,8 +177,12 @@ class Main
         }
         return $key;
     }
-    /*END SEND MAIL FUNCTION : SendMail()  */
-    /*BEGIN GET RANDOM STRING FUNCTION */
+    /**
+     * @param string $tablename
+     * @param array  $array
+     *
+     * @return array
+     */
     public function GetRecord($tablename, array $array)
     {
         /*
@@ -207,9 +243,12 @@ class Main
         mysqli_close($con);
         return $record;
     }
-    /*END GET RANDOM STRING FUNCTION : GetRandomString() */
-    /*BEGIN DATABASE RECORD FUNCTION */
-    /*BEGIN INSERT RECORD FUNCTION */
+    /**
+     * @param string $tablename
+     * @param array  $array
+     *
+     * @return array|null
+     */
     public function GetSingleRecord($tablename, array $array)
     {
         /*
@@ -259,9 +298,14 @@ class Main
         mysqli_close($con);
         return $record;
     }
-    /*END INSERT RECORD FUNCTION : InsertRecord()*/
-    /*BEGIN INSERT MULTIPLE RECORD FUNCTION */
-    public function InsertMultipleRecord($tablename, $fieldarray, $valuearray)
+    /**
+     * @param string $tablename
+     * @param array  $fieldarray
+     * @param array  $valuearray
+     *
+     * @return int
+     */
+    public function InsertMultipleRecord($tablename, array $fieldarray, array $valuearray)
     {
         if (TABLE_PREFIX != "") {
             $tablename = TABLE_PREFIX . $tablename;
@@ -289,8 +333,12 @@ class Main
         mysqli_close($con);
         return $totalnewrecord;
     }
-    /*END INSERT MULTIPLE RECORD FUNCTION */
-    /*BEGIN GET SINGLE RECORD FUNCTION */
+    /**
+     * @param string $tablename
+     * @param array  $values
+     *
+     * @return int|string
+     */
     public function InsertRecord($tablename, array $values)
     {
         /*
@@ -322,8 +370,11 @@ class Main
         }
         return $last_inserted_id;
     }
-    /*END GET SINGLE RECORD FUNCTION */
-    /*BEGIN GET RECORD FUNCTION */
+    /**
+     * @param string $string
+     *
+     * @return string
+     */
     protected function MakePassword($string)
     {
         if (!empty($string)) {
@@ -333,9 +384,12 @@ class Main
             //return hash("sha256", $string);
             //return hash("sha512", $string);
         }
+        return $string;
     }
-    /*END GET RECORD FUNCTION GetRecord()*/
-    /*BEGIN PAGINATION FUNCTION */
+    /**
+     * @param string $tablename
+     * @param array  $array
+     */
     public function PagiNation($tablename, $array = [])
     {
         /*
@@ -423,14 +477,20 @@ class Main
         echo '</div>';
         echo '</div>';
     }
+    /**
+     * @param int $pagevalue
+     *
+     * @return string
+     */
     private function PagingQueryString($pagevalue = 1)
     {
         parse_str($_SERVER['QUERY_STRING'], $getarray);
         @$getarray['page'] = $pagevalue;
         return http_build_query($getarray);
     }
-    /*END PAGINATION FUNCTION : PagiNation() */
-    /*BEGIN UPDATE RECORD FUNCTION */
+    /**
+     * @param string $url
+     */
     public function RedirectPage($url)
     {
         if ($url != "") {
@@ -438,8 +498,12 @@ class Main
             exit;
         }
     }
-    /*END UPDATE RECORD FUNCTION : UpdateRecord()*/
-    /*BEGIN DELETE RECORD FUNCTION*/
+    /**
+     * @param string $mailto
+     * @param string $subject
+     * @param string $message
+     * @param string $attachments
+     */
     public function SendMail($mailto, $subject, $message, $attachments = "")
     {
         // To send HTML mail, the Content-type header must be set
@@ -452,8 +516,10 @@ class Main
         //$headers .= 'Bcc: user4@example.com' . "\r\n";
         @mail($mailto, $subject, $message, $headers);
     }
-    /*END DELETE RECORD FUNCTION : DeleteRecord() */
-    /*BEGIN GET CUSTOM FUNCTION */
+    /**
+     * @param string $id
+     * @param string $currentstatus
+     */
     public function StatusChangeLink($id, $currentstatus)
     {
         if ($currentstatus == "0") {
@@ -462,16 +528,21 @@ class Main
             echo '<a href="' . $this->pagefilename . '?action=status&status=0&id=' . $id . '"><span  class="label label-success">Active</span></a>';
         }
     }
-    /*END GET CUSTOM FUNCTION : GetCustom() */
-    /*END DATABASE BASED NORMAL FUNCTION */
-    /*BEGIN FILE MANAGEMENT FUNCTOIN */
-    /*BEGIN UPLOAD FILE FUNCTION */
+    /**
+     * @param string $id
+     * @param int    $status
+     */
     public function StatusLink($id, $status = 0)
     {
         echo $this->pagefilename . '?action=status&status=' . $status . '&id=' . $id;
     }
-    /*END UPLOAD FILE FUNCTION : UploadFile() */
-    /*BEGIN DELETE FILE FUNCTION */
+    /**
+     * @param string $tablename
+     * @param array  $values
+     * @param string $where
+     *
+     * @return int
+     */
     public function UpdateRecord($tablename, array $values, $where = "")
     {
         /*
@@ -507,10 +578,13 @@ class Main
         //return mysql_affected_rows();
         return $totalupdated;
     }
-    /*DELETE FILE FUNCTION*/
-    /*END FILE MANAGEMENT FUNCTION */
-    /*BEGIN DATE DIFFERENCE FUNCTION*/
-    public function UploadFile($files, array $array)
+    /**
+     * @param array $files
+     * @param array $array
+     *
+     * @return array
+     */
+    public function UploadFile(array $files, array $array)
     {
         $uploaded_files = [];
         if (isset($files) && $files['name'] != "") {
@@ -555,50 +629,43 @@ class Main
         }
         return $uploaded_files;
     }
-    /*END DATE DIFFERENCE FUNCTION : DateDifference()*/
-    /*BEGIN PASSWORD ENCRYPTION FUNCTION*/
+    /**
+     * @param string $id
+     */
     public function ViewLink($id)
     {
         echo $this->pagefilename . '?action=view&id=' . $id;
     }
-    /*END PASSWORD ENCRYPTION FUNCTION*/
-    /*BEGIN PASSWORD ENCRYPTION FUNCTION*/
+    /**
+     * @param string $value
+     * @param string $function
+     *
+     * @return bool
+     */
     public function validate($value, $function = "require")
     {
         $response = false;
-        /*BEGIN REQUIRE VALIDAITON */
         if ($function == "require" && trim($value) != "") {
             $response = true;
         }
-        /*END REQUIRE VALIDAITON */
-        /*BEGIN NUMBER VALIDAITON */
         if (trim($value) != "" && $function == "numeric" && is_numeric($value)) {
             $response = true;
         }
-        /*END NUMBER VALIDAITON */
-        /*BEGIN STRING VALIDAITON */
         if (trim($value) != "" && $function == "alpha" && preg_match("/^[a-zA-Z ]*$/", $value)) {
             $response = true;
         }
-        /*END STRING VALIDAITON */
-        /*BEGIN ALPHA-NUMERIC VALIDAITON */
         if (trim($value) != "" && $function == "alphanumeric" && preg_match("/^[a-zA-Z0-9 ]*$/", $value)) {
             $response = true;
         }
-        /*END ALPHA-NUMERIC VALIDAITON */
-        /*BEGIN EMAIL VALIDAITON */
         if (trim($value) != "" && $function == "email" && filter_var($value, FILTER_VALIDATE_EMAIL)) {
             $response = true;
-        }
-        /*END EMAIL VALIDAITON */ /*BEGIN WEBSITE URL VALIDAITON */ else {
+        } else {
             if (trim($value) != "" && preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",
                     $value)
             ) {
                 $response = true;
             }
         }
-        /*END WEBSITE VALIDAITON */
         return $response;
     }
-    /*END PASSWORD ENCRYPTION FUNCTION*/
 }
