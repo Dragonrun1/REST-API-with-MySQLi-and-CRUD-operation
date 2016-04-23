@@ -3,13 +3,24 @@
  * Author : Bharat Parmar
 */
 require_once("../class/Main.class.php");
+/**
+ * Class REST
+ */
 class REST extends Main
 {
+    /**
+     * Main constructor.
+     */
     public function __construct()
     {
         parent::__construct();
         $this->inputs();
     }
+    /**
+     * @param $data
+     *
+     * @return array|string
+     */
     private function cleanInputs($data)
     {
         $clean_input = [];
@@ -26,14 +37,23 @@ class REST extends Main
         }
         return $clean_input;
     }
+    /**
+     * @return string
+     */
     public function get_referer()
     {
         return $_SERVER['HTTP_REFERER'];
     }
+    /**
+     * @return string
+     */
     public function get_request_method()
     {
         return $_SERVER['REQUEST_METHOD'];
     }
+    /**
+     * @return string
+     */
     private function get_status_message()
     {
         $status = [
@@ -81,6 +101,9 @@ class REST extends Main
         ];
         return ($status[$this->_code]) ? $status[$this->_code] : $status[500];
     }
+    /**
+     * @return void
+     */
     private function inputs()
     {
         switch ($this->get_request_method()) {
@@ -100,12 +123,20 @@ class REST extends Main
                 break;
         }
     }
+    /**
+     * @param $data
+     *
+     * @return string
+     */
     protected function json($data)
     {
         if (is_array($data)) {
             return json_encode($data);
         }
     }
+    /**
+     * @return void
+     */
     public function processApi()
     {
         $func = strtolower(trim(str_replace("/", "", $_REQUEST['function'])));
@@ -115,6 +146,10 @@ class REST extends Main
             $this->response('', 404);
         } // If the method not exist with in this class, response would be "Page not found".
     }
+    /**
+     * @param string $data
+     * @param int    $status
+     */
     public function response($data, $status = 200)
     {
         $this->_code = ($status) ? $status : 200;
@@ -122,14 +157,32 @@ class REST extends Main
         echo $data;
         exit;
     }
+    /**
+     * @return void
+     */
     private function set_headers()
     {
         header("HTTP/1.1 " . $this->_code . " " . $this->get_status_message());
         header("Content-Type:" . $this->_content_type);
     }
+    /**
+     * @type array $_allow
+     */
     public $_allow = [];
+    /**
+     * @type int $_code
+     */
     private $_code = 200;
+    /**
+     * @type string $_content_type
+     */
     public $_content_type = "application/json";
+    /**
+     * @type string $_method
+     */
     private $_method = "";
+    /**
+     * @type array $_request
+     */
     public $_request = [];
-}	
+}
