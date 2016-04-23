@@ -29,6 +29,7 @@ class REST extends Main
                 $clean_input[$k] = $this->cleanInputs($v);
             }
         } else {
+            /** @noinspection PhpDeprecationInspection */
             if (get_magic_quotes_gpc()) {
                 $data = trim(stripslashes($data));
             }
@@ -99,7 +100,7 @@ class REST extends Main
             504 => 'Gateway Timeout',
             505 => 'HTTP Version Not Supported'
         ];
-        return ($status[$this->_code]) ? $status[$this->_code] : $status[500];
+        return $status[$this->_code] ? $status[$this->_code] : $status[500];
     }
     /**
      * @return void
@@ -107,15 +108,15 @@ class REST extends Main
     private function inputs()
     {
         switch ($this->get_request_method()) {
-            case "POST":
+            case 'POST':
                 $this->_request = $this->cleanInputs($_POST);
                 break;
-            case "GET":
-            case "DELETE":
+            case 'GET':
+            case 'DELETE':
                 $this->_request = $this->cleanInputs($_GET);
                 break;
-            case "PUT":
-                parse_str(file_get_contents("php://input"), $this->_request);
+            case 'PUT':
+                parse_str(file_get_contents('php://input'), $this->_request);
                 $this->_request = $this->cleanInputs($this->_request);
                 break;
             default:
@@ -124,22 +125,11 @@ class REST extends Main
         }
     }
     /**
-     * @param $data
-     *
-     * @return string
-     */
-    protected function json($data)
-    {
-        if (is_array($data)) {
-            return json_encode($data);
-        }
-    }
-    /**
      * @return void
      */
     public function processApi()
     {
-        $func = strtolower(trim(str_replace("/", "", $_REQUEST['function'])));
+        $func = strtolower(trim(str_replace('/', '', $_REQUEST['function'])));
         if ((int)method_exists($this, $func) > 0) {
             $this->$func();
         } else {
@@ -152,7 +142,7 @@ class REST extends Main
      */
     public function response($data, $status = 200)
     {
-        $this->_code = ($status) ? $status : 200;
+        $this->_code = $status ? $status : 200;
         $this->set_headers();
         echo $data;
         exit;
@@ -162,8 +152,8 @@ class REST extends Main
      */
     private function set_headers()
     {
-        header("HTTP/1.1 " . $this->_code . " " . $this->get_status_message());
-        header("Content-Type:" . $this->_content_type);
+        header('HTTP/1.1 ' . $this->_code . ' ' . $this->get_status_message());
+        header('Content-Type:' . $this->_content_type);
     }
     /**
      * @type array $_allow
@@ -176,11 +166,11 @@ class REST extends Main
     /**
      * @type string $_content_type
      */
-    public $_content_type = "application/json";
+    public $_content_type = 'application/json';
     /**
      * @type string $_method
      */
-    private $_method = "";
+    private $_method = '';
     /**
      * @type array $_request
      */

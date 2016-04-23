@@ -1,5 +1,5 @@
 <?php
-@include("../config.php");
+@include('../config.php');
 /**
  * Class Main
  */
@@ -17,9 +17,9 @@ class Main
         /* END SETTING PAGE PER RECORD */
         $this->pagefilename = strtolower(basename($_SERVER['PHP_SELF']));
         $info_array = [];
-        $this->sitedata = $this->GetSingleRecord("site_settings", $info_array);
-        define("SITE_TITLE", stripslashes($this->sitedata['site_title']));
-        define("SITE_EMAIL", stripslashes($this->sitedata['site_email']));
+        $this->sitedata = $this->GetSingleRecord('site_settings', $info_array);
+        define('SITE_TITLE', stripslashes($this->sitedata['site_title']));
+        define('SITE_EMAIL', stripslashes($this->sitedata['site_email']));
     }
     /**
      *
@@ -33,10 +33,10 @@ class Main
      */
     private function DBConnection()
     {
-        @include("../config.php");
+        @include('../config.php');
         $con = mysqli_connect($db_hostname, $db_username, $db_password, $db_name);
         if (mysqli_connect_errno()) {
-            echo "Failed to connect to MySQL: " . mysqli_connect_error();
+            echo 'Failed to connect to MySQL: ' . mysqli_connect_error();
             exit;
         } else {
             return $con;
@@ -88,15 +88,15 @@ class Main
 
             RETURN : number of deleted records
         */
-        if (TABLE_PREFIX != "") {
+        if (TABLE_PREFIX != '') {
             $tablename = TABLE_PREFIX . $tablename;
         }
-        $query_string = "delete from " . $tablename . " ";
-        if ($where != "") {
-            $query_string .= " where " . $where;
+        $query_string = 'delete from ' . $tablename . ' ';
+        if ($where != '') {
+            $query_string .= ' where ' . $where;
         }
         if ($limit > 0) {
-            $query_string .= " limit " . $limit;
+            $query_string .= ' limit ' . $limit;
         }
         /* TO CHECK QUERY REMOVE ENABLE BELOW CODE */
         //echo $query_string;exit;
@@ -145,7 +145,7 @@ class Main
         if (!empty($string)) {
             $string = SECRET_KEY . $string;        //SECRET_KEY IS DEFINED IN THE config.php FILE.
             $plain_text = base64_decode($string);
-            return str_replace(SECRET_KEY, "", $plain_text);
+            return str_replace(SECRET_KEY, '', $plain_text);
             //return sha1($string);
             //return hash("sha256", $string);
             //return hash("sha512", $string);
@@ -198,37 +198,37 @@ class Main
                         groupby : group by
             RETURN : RECORD ARRAY
         */
-        if (TABLE_PREFIX != "") {
+        if (TABLE_PREFIX != '') {
             $tablename = TABLE_PREFIX . $tablename;
         }
         $record = [];
-        if (!isset($array['fields']) || $array['fields'] == "") {
-            $array['fields'] = "*";
+        if (!isset($array['fields']) || $array['fields'] == '') {
+            $array['fields'] = '*';
         }
-        $query_string = "select " . $array['fields'] . " from " . $tablename . " where 1=1 ";
-        if (@$array['where'] != "") {
-            $query_string .= " and " . $array['where'] . " ";
+        $query_string = 'select ' . $array['fields'] . ' from ' . $tablename . ' where 1=1 ';
+        if (@$array['where'] != '') {
+            $query_string .= ' and ' . $array['where'] . ' ';
         }
         //setting group by
-        if (@$array['groupby'] != "") {
-            $query_string .= " group by " . $array['groupby'];
+        if (@$array['groupby'] != '') {
+            $query_string .= ' group by ' . $array['groupby'];
         }
         //seeting order by
-        if (@$array['orderby'] == "") {
+        if (@$array['orderby'] == '') {
             $array['orderby'] = 1;
         }
         //setting order type
-        if (@$array['ordertype'] == "") {
-            $array['ordertype'] = "desc";
+        if (@$array['ordertype'] == '') {
+            $array['ordertype'] = 'desc';
         }
-        $query_string .= " order by " . $array['orderby'] . " " . $array['ordertype'];
+        $query_string .= ' order by ' . $array['orderby'] . ' ' . $array['ordertype'];
         //setting record start limit
-        if (@$array['startfrom'] == "") {
+        if (@$array['startfrom'] == '') {
             $array['startfrom'] = 0;
         }
         //setting record limit
         if (@$array['limit'] > 0 && is_numeric(@$array['limit'])) {
-            $query_string .= " limit " . $array['startfrom'] . ", " . $array['limit'];
+            $query_string .= ' limit ' . $array['startfrom'] . ', ' . $array['limit'];
         }
         /* TO CHECK QUERY REMOVE ENABLE BELOW CODE */
         //echo $query_string;exit;
@@ -259,32 +259,32 @@ class Main
                         where : where condition as per your requirement
             RETURN : RECORD ARRAY
         */
-        if (TABLE_PREFIX != "") {
+        if (TABLE_PREFIX != '') {
             $tablename = TABLE_PREFIX . $tablename;
         }
         $record = [];
-        if (!isset($array['fields']) || $array['fields'] == "") {
-            $array['fields'] = "*";
+        if (!isset($array['fields']) || $array['fields'] == '') {
+            $array['fields'] = '*';
         }
-        $query_string = "select " . $array['fields'] . " from " . $tablename . " where 1=1 ";
-        if (@$array['where'] != "") {
-            $query_string .= " and " . $array['where'] . " ";
+        $query_string = 'select ' . $array['fields'] . ' from ' . $tablename . ' where 1=1 ';
+        if (@$array['where'] != '') {
+            $query_string .= ' and ' . $array['where'] . ' ';
         }
         //setting group by
-        if (@$array['groupby'] != "") {
-            $query_string .= " group by " . $array['groupby'];
+        if (@$array['groupby'] != '') {
+            $query_string .= ' group by ' . $array['groupby'];
         }
         //seeting order by
-        if (@$array['orderby'] == "") {
+        if (@$array['orderby'] == '') {
             $array['orderby'] = 1;
         }
         //setting order type
-        if (@$array['ordertype'] == "") {
-            $array['ordertype'] = "desc";
+        if (@$array['ordertype'] == '') {
+            $array['ordertype'] = 'desc';
         }
-        $query_string .= " order by " . $array['orderby'] . " " . $array['ordertype'];
+        $query_string .= ' order by ' . $array['orderby'] . ' ' . $array['ordertype'];
         //setting record start limit
-        if (@$array['startfrom'] == "") {
+        if (@$array['startfrom'] == '') {
             $array['startfrom'] = 0;
         }
         /* TO CHECK QUERY REMOVE ENABLE BELOW CODE */
@@ -307,25 +307,25 @@ class Main
      */
     public function InsertMultipleRecord($tablename, array $fieldarray, array $valuearray)
     {
-        if (TABLE_PREFIX != "") {
+        if (TABLE_PREFIX != '') {
             $tablename = TABLE_PREFIX . $tablename;
         }
-        $query_string = "insert into " . $tablename . " (";
+        $query_string = 'insert into ' . $tablename . ' (';
         foreach ($fieldarray as $key => $value) {
-            $query_string .= "`" . $value . "` ,";
+            $query_string .= '`' . $value . '` ,';
         }
-        $query_string = trim($query_string, " ,");
-        $query_string .= " ) values ";
+        $query_string = trim($query_string, ' ,');
+        $query_string .= ' ) values ';
         $con = $this->DBConnection();
         foreach ($valuearray as $key => $value) {
-            $query_string .= " ( ";
+            $query_string .= ' ( ';
             foreach ($value as $k => $v) {
                 $query_string .= "'" . mysqli_real_escape_string($con, $v) . "' ,";
             }
-            $query_string = trim($query_string, " ,");
-            $query_string .= " ) ,";
+            $query_string = trim($query_string, ' ,');
+            $query_string .= ' ) ,';
         }
-        $query_string = trim($query_string, " ,");
+        $query_string = trim($query_string, ' ,');
         /* TO CHECK QUERY REMOVE ENABLE BELOW CODE */
         //echo $query_string;exit;
         mysqli_query($con, $query_string);
@@ -352,16 +352,16 @@ class Main
             RETURN : LAST INSERTED IDs
         */
         $last_inserted_id = 0;
-        if (TABLE_PREFIX != "") {
+        if (TABLE_PREFIX != '') {
             $tablename = TABLE_PREFIX . $tablename;
         }
         if (!empty($values)) {
             $con = $this->DBConnection();
-            $query_string = "insert into " . $tablename . " set ";
+            $query_string = 'insert into ' . $tablename . ' set ';
             foreach ($values as $key => $value) {
                 $query_string .= $key . " = '" . addslashes(mysqli_real_escape_string($con, $value)) . "' , ";
             }
-            $query_string = trim($query_string, " , ");
+            $query_string = trim($query_string, ' , ');
             /* TO CHECK QUERY REMOVE ENABLE BELOW CODE */
             //echo $query_string;exit;
             mysqli_query($con, $query_string);
@@ -397,18 +397,18 @@ class Main
             $query : By defualt it will be generated from getrecord functions. You can also provide with custom query.
             RETURN : display the pagination number in list
         */
-        if (@$array['query'] != "") {
+        if (@$array['query'] != '') {
             $query = $array['query'];
         } else {
-            if (TABLE_PREFIX != "") {
+            if (TABLE_PREFIX != '') {
                 $tablename = TABLE_PREFIX . $tablename;
             }
-            $query = "select count(1) as total from " . $tablename . " where 1=1 ";
-            if (@$array['where'] != "") {
-                $query .= " and " . $array['where'] . " ";
+            $query = 'select count(1) as total from ' . $tablename . ' where 1=1 ';
+            if (@$array['where'] != '') {
+                $query .= ' and ' . $array['where'] . ' ';
             }
-            if (@$array['groupby'] != "") {
-                $query .= " group by " . $array['groupby'];
+            if (@$array['groupby'] != '') {
+                $query .= ' group by ' . $array['groupby'];
             }
         }
         echo '<div class="row">';
@@ -462,13 +462,13 @@ class Main
         echo '<div class="col-md-4">';
         if ($totalrecord_data['total'] > 20) {
             echo '<ul class="pagination">';
-            echo "<li><a>Records/Page : </a></li>";
+            echo '<li><a>Records/Page : </a></li>';
             $record_array = [20, 50, 100, 200];
             foreach ($record_array as $key => $value) {
                 if ($_SESSION['pagerecords_limit'] == $value) {
                     $activerecord = 'style="background:#ddd !important;"';
                 } else {
-                    $activerecord = "";
+                    $activerecord = '';
                 }
                 echo '<li><a href="' . $_SERVER['PHP_SELF'] . '?record=' . $value . '" ' . $activerecord . '>' . $value . '</a></li>';
             }
@@ -493,7 +493,7 @@ class Main
      */
     public function RedirectPage($url)
     {
-        if ($url != "") {
+        if ($url != '') {
             echo '<script type="text/javascript">window.location="' . $url . '";</script>';
             exit;
         }
@@ -504,7 +504,7 @@ class Main
      * @param string $message
      * @param string $attachments
      */
-    public function SendMail($mailto, $subject, $message, $attachments = "")
+    public function SendMail($mailto, $subject, $message, $attachments = '')
     {
         // To send HTML mail, the Content-type header must be set
         $headers = 'MIME-Version: 1.0' . "\r\n";
@@ -522,7 +522,7 @@ class Main
      */
     public function StatusChangeLink($id, $currentstatus)
     {
-        if ($currentstatus == "0") {
+        if ($currentstatus == '0') {
             echo '<a href="' . $this->pagefilename . '?action=status&status=1&id=' . $id . '"><span  class="label label-danger">Inactive</span></a>';
         } else {
             echo '<a href="' . $this->pagefilename . '?action=status&status=0&id=' . $id . '"><span  class="label label-success">Active</span></a>';
@@ -543,7 +543,7 @@ class Main
      *
      * @return int
      */
-    public function UpdateRecord($tablename, array $values, $where = "")
+    public function UpdateRecord($tablename, array $values, $where = '')
     {
         /*
             REQUIREMENT :
@@ -556,18 +556,18 @@ class Main
 
             RETURN : number of updated records
         */
-        if (TABLE_PREFIX != "") {
+        if (TABLE_PREFIX != '') {
             $tablename = TABLE_PREFIX . $tablename;
         }
         if (!empty($values)) {
             $con = $this->DBConnection();
-            $query_string = "update " . $tablename . " set ";
+            $query_string = 'update ' . $tablename . ' set ';
             foreach ($values as $key => $value) {
                 $query_string .= $key . " = '" . addslashes(mysqli_real_escape_string($con, $value)) . "' , ";
             }
-            $query_string = trim($query_string, " , ");
-            if ($where != "") {
-                $query_string .= " where " . $where;
+            $query_string = trim($query_string, ' , ');
+            if ($where != '') {
+                $query_string .= ' where ' . $where;
             }
             /* TO CHECK QUERY REMOVE ENABLE BELOW CODE */
             //echo $query_string;exit;
@@ -587,7 +587,7 @@ class Main
     public function UploadFile(array $files, array $array)
     {
         $uploaded_files = [];
-        if (isset($files) && $files['name'] != "") {
+        if (isset($files) && $files['name'] != '') {
             //CHANGING PERMISSION OF THE DIRECTORY
             @chmod($array['uploadpath'], 0755);
             if ($array['limit'] == 0 || $array['limit'] > @count($files['name'])) {
@@ -599,11 +599,11 @@ class Main
                 }
                 $allowedfiletypes = $array['filetype'];
                 $max_size = $array['maxsize'] * 1000;    //in KB
-                $filename = "";
+                $filename = '';
                 if ($array['limit'] > 1) {
-                    $currentfile_extension = end(@explode(".", $files['name'][$a]));
+                    $currentfile_extension = end(@explode('.', $files['name'][$a]));
                     if (in_array(strtolower($currentfile_extension), $allowedfiletypes)) {
-                        $filename = date("YmdHis") . rand(1000, 9999) . "." . $currentfile_extension;
+                        $filename = date('YmdHis') . rand(1000, 9999) . '.' . $currentfile_extension;
                         if ($files['size'][$a] < $max_size) {
                             if (@move_uploaded_file($files['tmp_name'][$a], $array['uploadpath'] . $filename)) {
                                 $uploaded_files[] = $filename;
@@ -613,9 +613,9 @@ class Main
                         }
                     }
                 } else {
-                    $currentfile_extension = end(@explode(".", $files['name']));
+                    $currentfile_extension = end(@explode('.', $files['name']));
                     if (in_array(strtolower($currentfile_extension), $allowedfiletypes)) {
-                        $filename = date("YmdHis") . rand(1000, 9999) . "." . $currentfile_extension;
+                        $filename = date('YmdHis') . rand(1000, 9999) . '.' . $currentfile_extension;
                         if ($files['size'][$a] < $max_size) {
                             if (@move_uploaded_file($files['tmp_name'], $array['uploadpath'] . $filename)) {
                                 $uploaded_files[] = $filename;
@@ -642,25 +642,25 @@ class Main
      *
      * @return bool
      */
-    public function validate($value, $function = "require")
+    public function validate($value, $function = 'require')
     {
         $response = false;
-        if ($function == "require" && trim($value) != "") {
+        if ($function == 'require' && trim($value) != '') {
             $response = true;
         }
-        if (trim($value) != "" && $function == "numeric" && is_numeric($value)) {
+        if (trim($value) != '' && $function == 'numeric' && is_numeric($value)) {
             $response = true;
         }
-        if (trim($value) != "" && $function == "alpha" && preg_match("/^[a-zA-Z ]*$/", $value)) {
+        if (trim($value) != '' && $function == 'alpha' && preg_match("/^[a-zA-Z ]*$/", $value)) {
             $response = true;
         }
-        if (trim($value) != "" && $function == "alphanumeric" && preg_match("/^[a-zA-Z0-9 ]*$/", $value)) {
+        if (trim($value) != '' && $function == 'alphanumeric' && preg_match("/^[a-zA-Z0-9 ]*$/", $value)) {
             $response = true;
         }
-        if (trim($value) != "" && $function == "email" && filter_var($value, FILTER_VALIDATE_EMAIL)) {
+        if (trim($value) != '' && $function == 'email' && filter_var($value, FILTER_VALIDATE_EMAIL)) {
             $response = true;
         } else {
-            if (trim($value) != "" && preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",
+            if (trim($value) != '' && preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i",
                     $value)
             ) {
                 $response = true;
