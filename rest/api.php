@@ -142,4 +142,3 @@
 	// Initiiate Library
 	$api = new API();
 	$api->processApi();
-?>
