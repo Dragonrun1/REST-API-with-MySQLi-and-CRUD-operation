@@ -6,7 +6,7 @@ require_once("../class/Main.class.php");
 class REST extends Main
 {
     public function __construct()
-	{
+    {
         parent::__construct();
         $this->inputs();
     }
@@ -16,14 +16,14 @@ class REST extends Main
         if (is_array($data)) {
             foreach ($data as $k => $v) {
                 $clean_input[$k] = $this->cleanInputs($v);
-			}
+            }
         } else {
             if (get_magic_quotes_gpc()) {
                 $data = trim(stripslashes($data));
-			}
+            }
             $data = strip_tags($data);
             $clean_input = trim($data);
-		}
+        }
         return $clean_input;
     }
     public function get_referer()
@@ -98,13 +98,13 @@ class REST extends Main
             default:
                 $this->response('', 406);
                 break;
-		}
+        }
     }
     protected function json($data)
     {
         if (is_array($data)) {
             return json_encode($data);
-		}
+        }
     }
     public function processApi()
     {

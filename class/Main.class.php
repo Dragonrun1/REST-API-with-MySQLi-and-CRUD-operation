@@ -2,13 +2,13 @@
 @include("../config.php");
 class Main
 {
-	/* BEGIN __CONSTRUNCT FUNCITON FOR THE MAIN CLASS */
+    /* BEGIN __CONSTRUNCT FUNCITON FOR THE MAIN CLASS */
     public function __construct()
     {
         /*BEGIN SETTING PAGE PER RECORD */
         if (isset($_GET['record']) && is_numeric($_GET['record'])) {
             $_SESSION['pagerecords_limit'] = $_GET['record'];
-		}
+        }
         /* END SETTING PAGE PER RECORD */
         $this->pagefilename = strtolower(basename($_SERVER['PHP_SELF']));
         $info_array = [];
@@ -17,13 +17,13 @@ class Main
         define("SITE_EMAIL", stripslashes($this->sitedata['site_email']));
     }
     /* END __CONSTRUNCT FUNCITON FOR THE MAIN CLASS */
-	/*BEGIN DATABASE CONNECTION FUNCTION WITH MYSQLI*/
+    /*BEGIN DATABASE CONNECTION FUNCTION WITH MYSQLI*/
     public function AddLink()
     {
         echo $this->pagefilename . '?action=add';
     }
-	/*BEGIN DATABASE CONNECTION FUNCTION WITH MYSQLI*/
-	/*BEGIN PAGE REDIRECTION FUNCTION */
+    /*BEGIN DATABASE CONNECTION FUNCTION WITH MYSQLI*/
+    /*BEGIN PAGE REDIRECTION FUNCTION */
     private function DBConnection()
     {
         @include("../config.php");
@@ -33,10 +33,10 @@ class Main
             exit;
         } else {
             return $con;
-		}
+        }
     }
-	/*END PAGE REDIRECTION FUNCTION : RedirectPage()*/
-	/*BEGIN VIEW LINK CREATION FUNCTION */
+    /*END PAGE REDIRECTION FUNCTION : RedirectPage()*/
+    /*BEGIN VIEW LINK CREATION FUNCTION */
     public function DateDifference($date1, $date2)
     {
         $difference = abs(strtotime($date1) - strtotime($date2));
@@ -45,22 +45,22 @@ class Main
         $difference_array['extra_hours'] = abs($difference_array['hours'] % 24);
         return $difference_array;
     }
-	/*END EDIT LINK CREATION FUNCTION */
-	/*BEGIN VIEW LINK CREATION FUNCTION */
+    /*END EDIT LINK CREATION FUNCTION */
+    /*BEGIN VIEW LINK CREATION FUNCTION */
     public function DeleteFile(array $array)
     {
         foreach ($array['files'] as $key => $value) {
             @unlink($array['uploadpath'] . $value);
-		}
+        }
     }
-	/*END EDIT LINK CREATION FUNCTION */
-	/*BEGIN EDIT LINK CREATION FUNCTION */
+    /*END EDIT LINK CREATION FUNCTION */
+    /*BEGIN EDIT LINK CREATION FUNCTION */
     public function DeleteLink($id)
     {
         echo $this->pagefilename . '?action=delete&id=' . $id;
     }
-	/*END EDIT LINK CREATION FUNCTION */
-	/*BEGIN STATUS CHANGE LINK CREATION FUNCTION */
+    /*END EDIT LINK CREATION FUNCTION */
+    /*BEGIN STATUS CHANGE LINK CREATION FUNCTION */
     public function DeleteRecord($tablename, $where, $limit = 0)
     {
         /*
@@ -72,7 +72,7 @@ class Main
         */
         if (TABLE_PREFIX != "") {
             $tablename = TABLE_PREFIX . $tablename;
-		}
+        }
         $query_string = "delete from " . $tablename . " ";
         if ($where != "") {
             $query_string .= " where " . $where;
@@ -92,8 +92,8 @@ class Main
     {
         echo $this->pagefilename . '?action=edit&id=' . $id;
     }
-	/*END STATUS CHANGE LINK CREATION FUNCTION */
-	/*BEGIN DELETE LINK CREATION FUNCTION */
+    /*END STATUS CHANGE LINK CREATION FUNCTION */
+    /*BEGIN DELETE LINK CREATION FUNCTION */
     public function GetCustom($query_string)
     {
         /*
@@ -107,12 +107,12 @@ class Main
                 $record_array[] = $data;
             }
             mysqli_free_result($query);
-		}
+        }
         mysqli_close($con);
         return $record_array;
     }
-	/*END DELETE LINK CREATION FUNCTION */
-	/*BEGIN VALIDATE FUNCTION */
+    /*END DELETE LINK CREATION FUNCTION */
+    /*BEGIN VALIDATE FUNCTION */
     protected function GetPassword($string)
     {
         if (!empty($string)) {
@@ -122,10 +122,10 @@ class Main
             //return sha1($string);
             //return hash("sha256", $string);
             //return hash("sha512", $string);
-		}
+        }
     }
-	/*END VALIDATE FUNCTION */
-	/*BEGIN SEND MAIL FUNCTION */
+    /*END VALIDATE FUNCTION */
+    /*BEGIN SEND MAIL FUNCTION */
     public function GetRandomString($length, $type = 0)
     {
         $key = '';
@@ -139,14 +139,14 @@ class Main
             } else {
                 $keys = array_merge(range(0, 9), range('a', 'z'));
             }
-		}
+        }
         for ($i = 0; $i < $length; $i++) {
             $key .= $keys[array_rand($keys)];
         }
         return $key;
     }
-	/*END SEND MAIL FUNCTION : SendMail()  */
-	/*BEGIN GET RANDOM STRING FUNCTION */
+    /*END SEND MAIL FUNCTION : SendMail()  */
+    /*BEGIN GET RANDOM STRING FUNCTION */
     public function GetRecord($tablename, array $array)
     {
         /*
@@ -164,7 +164,7 @@ class Main
         */
         if (TABLE_PREFIX != "") {
             $tablename = TABLE_PREFIX . $tablename;
-		}
+        }
         $record = [];
         if (!isset($array['fields']) || $array['fields'] == "") {
             $array['fields'] = "*";
@@ -207,8 +207,8 @@ class Main
         mysqli_close($con);
         return $record;
     }
-	/*END GET RANDOM STRING FUNCTION : GetRandomString() */
-	/*BEGIN DATABASE RECORD FUNCTION */
+    /*END GET RANDOM STRING FUNCTION : GetRandomString() */
+    /*BEGIN DATABASE RECORD FUNCTION */
     /*BEGIN INSERT RECORD FUNCTION */
     public function GetSingleRecord($tablename, array $array)
     {
@@ -277,7 +277,7 @@ class Main
             $query_string .= " ( ";
             foreach ($value as $k => $v) {
                 $query_string .= "'" . mysqli_real_escape_string($con, $v) . "' ,";
-			}
+            }
             $query_string = trim($query_string, " ,");
             $query_string .= " ) ,";
         }
@@ -312,7 +312,7 @@ class Main
             $query_string = "insert into " . $tablename . " set ";
             foreach ($values as $key => $value) {
                 $query_string .= $key . " = '" . addslashes(mysqli_real_escape_string($con, $value)) . "' , ";
-			}
+            }
             $query_string = trim($query_string, " , ");
             /* TO CHECK QUERY REMOVE ENABLE BELOW CODE */
             //echo $query_string;exit;
@@ -348,7 +348,7 @@ class Main
         } else {
             if (TABLE_PREFIX != "") {
                 $tablename = TABLE_PREFIX . $tablename;
-			}
+            }
             $query = "select count(1) as total from " . $tablename . " where 1=1 ";
             if (@$array['where'] != "") {
                 $query .= " and " . $array['where'] . " ";
@@ -367,14 +367,14 @@ class Main
                 echo '<ul class="pagination">';
                 if (@$_GET['page'] > 1) {
                     echo '<li><a href="' . $_SERVER['PHP_SELF'] . '?' . $this->PagingQueryString(1) . '">&laquo;</a></li>';
-				}
+                }
                 $maxpage_display = 5;
                 $startpage = 1;
                 if ($lastpage > $maxpage_display) {
                     $endpage = $maxpage_display;
                 } else {
                     $endpage = $lastpage;
-				}
+                }
                 if (@$_GET['page'] < $maxpage_display) {
                     $startpage = 1;
                 } else {
@@ -384,25 +384,25 @@ class Main
                     } else {
                         $endpage = $lastpage;
                     }
-				}
+                }
                 if ($startpage > 4) {
                     echo '<li><a href="' . $_SERVER['PHP_SELF'] . '?' . $this->PagingQueryString($startpage - 2) . '">&larr; Prev</a></li>';
-				}
+                }
                 for ($a = $startpage; $a <= $endpage; $a++) {
                     if (@$_GET['page'] == $a) {
                         echo '<li class="active"><a href="' . $_SERVER['PHP_SELF'] . '?' . $this->PagingQueryString($a) . '"  style="background:#ddd !important;">' . $a . '</a></li>';
                     } else {
                         echo '<li><a href="' . $_SERVER['PHP_SELF'] . '?' . $this->PagingQueryString($a) . '">' . $a . '</a></li>';
                     }
-				}
+                }
                 if ($endpage < ($lastpage - 3)) {
                     echo '<li><a href="' . $_SERVER['PHP_SELF'] . '?' . $this->PagingQueryString($endpage - 2) . '">Next &rarr;</a></li>';
-				}
+                }
                 if (@$_GET['page'] < $lastpage) {
                     echo '<li><a href="' . $_SERVER['PHP_SELF'] . '?' . $this->PagingQueryString($lastpage) . '">&raquo;</a></li>';
-				}
+                }
                 echo '</ul>';
-			}
+            }
         }
         echo '</div>';
         echo '<div class="col-md-4">';
@@ -413,9 +413,9 @@ class Main
             foreach ($record_array as $key => $value) {
                 if ($_SESSION['pagerecords_limit'] == $value) {
                     $activerecord = 'style="background:#ddd !important;"';
-				} else {
+                } else {
                     $activerecord = "";
-				}
+                }
                 echo '<li><a href="' . $_SERVER['PHP_SELF'] . '?record=' . $value . '" ' . $activerecord . '>' . $value . '</a></li>';
             }
             echo '</ul>';
@@ -493,11 +493,11 @@ class Main
             $query_string = "update " . $tablename . " set ";
             foreach ($values as $key => $value) {
                 $query_string .= $key . " = '" . addslashes(mysqli_real_escape_string($con, $value)) . "' , ";
-			}
+            }
             $query_string = trim($query_string, " , ");
             if ($where != "") {
                 $query_string .= " where " . $where;
-			}
+            }
             /* TO CHECK QUERY REMOVE ENABLE BELOW CODE */
             //echo $query_string;exit;
             mysqli_query($con, $query_string);
@@ -518,11 +518,11 @@ class Main
             @chmod($array['uploadpath'], 0755);
             if ($array['limit'] == 0 || $array['limit'] > @count($files['name'])) {
                 $array['limit'] = @count($files['name']);
-			}
+            }
             for ($a = 0; $a < $array['limit']; $a++) {
                 if (@$array['maxsize'] <= 0) {
                     $array['maxsize'] = 5000;
-				}
+                }
                 $allowedfiletypes = $array['filetype'];
                 $max_size = $array['maxsize'] * 1000;    //in KB
                 $filename = "";
@@ -537,7 +537,7 @@ class Main
                                 @chmod($array['uploadpath'] . $filename, 0755);
                             }
                         }
-					}
+                    }
                 } else {
                     $currentfile_extension = end(@explode(".", $files['name']));
                     if (in_array(strtolower($currentfile_extension), $allowedfiletypes)) {
@@ -547,22 +547,22 @@ class Main
                                 $uploaded_files[] = $filename;
                                 //CHANGIN FILE PERMISSION
                                 @chmod($array['uploadpath'] . $filename, 0755);
-							}
-						}
-					}
-				}
-			}
-		}
+                            }
+                        }
+                    }
+                }
+            }
+        }
         return $uploaded_files;
     }
-	/*END DATE DIFFERENCE FUNCTION : DateDifference()*/
-	/*BEGIN PASSWORD ENCRYPTION FUNCTION*/
+    /*END DATE DIFFERENCE FUNCTION : DateDifference()*/
+    /*BEGIN PASSWORD ENCRYPTION FUNCTION*/
     public function ViewLink($id)
     {
         echo $this->pagefilename . '?action=view&id=' . $id;
     }
-	/*END PASSWORD ENCRYPTION FUNCTION*/
-	/*BEGIN PASSWORD ENCRYPTION FUNCTION*/
+    /*END PASSWORD ENCRYPTION FUNCTION*/
+    /*BEGIN PASSWORD ENCRYPTION FUNCTION*/
     public function validate($value, $function = "require")
     {
         $response = false;
@@ -595,10 +595,10 @@ class Main
                     $value)
             ) {
                 $response = true;
-			}
-		}
+            }
+        }
         /*END WEBSITE VALIDAITON */
         return $response;
     }
-	/*END PASSWORD ENCRYPTION FUNCTION*/
+    /*END PASSWORD ENCRYPTION FUNCTION*/
 }
