@@ -1,11 +1,20 @@
 <?php
 require_once("Rest.inc.php");
+/**
+ * Class API
+ */
 class API extends REST
 {
+    /**
+     * Main constructor.
+     */
     public function __construct()
     {
         parent::__construct();                // Init parent contructor
     }
+    /**
+     *
+     */
     protected function deleteuser()
     {
         // Cross validation if the request method is DELETE else it will return "Not Acceptable" status
@@ -31,6 +40,9 @@ class API extends REST
             $this->response('', 204);    // If no records "No Content" status
         }
     }
+    /**
+     *
+     */
     protected function login()
     {
         // Cross validation if the request method is POST else it will return "Not Acceptable" status
@@ -61,6 +73,9 @@ class API extends REST
         $error = ['status' => "Failed", "msg" => "Invalid data"];
         $this->response($this->json($error), 400);
     }
+    /**
+     *
+     */
     protected function register()
     {
         // Cross validation if the request method is POST else it will return "Not Acceptable" status
@@ -87,7 +102,7 @@ class API extends REST
                     'register_date'      => date("Y-m-d H:i:s"),
                     'register_ipaddress' => $_SERVER['REMOTE_ADDR']
                 ];
-                //$this->response($this->json($info_array), 200);		
+                //$this->response($this->json($info_array), 200);
                 $user_id = $this->InsertRecord("user_master", $info_array);
                 if ($user_id > 0) {
                     $response_array['status'] = 'success';
@@ -103,6 +118,9 @@ class API extends REST
             }
         }
     }
+    /**
+     *
+     */
     protected function users()
     {
         // Cross validation if the request method is GET else it will return "Not Acceptable" status
@@ -126,8 +144,11 @@ class API extends REST
             $this->response($this->json($response_array), 204);
         }
     }
+    /**
+     * @type string $data
+     */
     public $data = "";
 }
-// Initiiate Library
+// Initiate Library
 $api = new API();
 $api->processApi();
